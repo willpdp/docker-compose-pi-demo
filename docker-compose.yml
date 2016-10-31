@@ -1,0 +1,60 @@
+version: '2'
+services:
+  time_display_service:
+    image: time_display_service
+    build:
+      context: ./time_display_service/
+    # map internal port 4567 to host port 9999
+    ports:
+      - "9999:4567"
+    networks:
+      - source
+      - colour
+      - style
+    links:
+      - time_source_service
+      - funky_colour_service
+      - style_service
+  time_source_service:
+    image: time_source_service
+    build:
+      context: ./time_source_service/
+#    ports:
+#      - "8080:8080"
+    networks:
+      - source
+  funky_colour_service:
+    image: funky_colour_service
+    build:
+      context: ./funky_colour_service/
+#    ports:
+#      - "5000:5000"
+    networks:
+      - colour
+  style_service:
+    image: style_service
+    build:
+      context: ./style_service/
+#    ports:
+#      - "8080:8080"
+    networks:
+      - style
+#  lb:
+# #   image: dockercloud/haproxy:1.5.3
+#    #image: armhf/haproxy:1.6
+#    depends_on:
+#      - time_source_service
+#      - funky_colour_service
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    ports:
+#      - "8088:80"
+#    networks:
+#      - colour
+#      - source
+#      - style
+networks:
+  colour:
+  source:
+  style:  
+      
